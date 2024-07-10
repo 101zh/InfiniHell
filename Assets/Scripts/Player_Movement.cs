@@ -37,7 +37,6 @@ public class Player_Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(move.ReadValue<Vector2>());
         rb2D.velocity = move.ReadValue<Vector2>().normalized * movementSpeed * Time.deltaTime;
     }
 }
