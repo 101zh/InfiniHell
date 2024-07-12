@@ -17,8 +17,8 @@ public class GameManager : MonoBehaviour
     {
         Vector3 cameraSize = mainCam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f));
         // Adds 1f to move walls a bit outside camera boundaries
-        screenWidth = cameraSize.x + 0.5f;
-        screenHeight = cameraSize.y + 0.5f;
+        screenWidth = cameraSize.x;
+        screenHeight = cameraSize.y;
     }
 
     // Update is called once per frame
