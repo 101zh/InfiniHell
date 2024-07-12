@@ -9,15 +9,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Camera mainCam;
     [SerializeField] private float wallThickness = 1f;
 
-    private float screenWidth; // In Coordinate Values
-    private float screenHeight;// In Coordinate Values
+    private static float screenWidth; // In Coordinate Values
+    private static float screenHeight;// In Coordinate Values
 
     // Start is called before the first frame update
     void Start()
     {
         Vector3 cameraSize = mainCam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f));
-        screenWidth = cameraSize.x;
-        screenHeight = cameraSize.y;
+        // Adds 1f to move walls a bit outside camera boundaries
+        screenWidth = cameraSize.x + 1f;
+        screenHeight = cameraSize.y + 1f;
     }
 
     // Update is called once per frame
@@ -34,5 +35,13 @@ public class GameManager : MonoBehaviour
 
         walls[3].size = new Vector2(wallThickness, screenHeight * 2f);
         walls[3].transform.position = new Vector2(-screenWidth - (0.5f * wallThickness), 0);
+    }
+
+    public static bool isOutOfBounds(Vector2 position)
+    {
+        if (position.x < -screenWidth || position.x > screenWidth || position.y > screenHeight || position.y < -screenHeight)
+            return false;
+
+        return true;
     }
 }
