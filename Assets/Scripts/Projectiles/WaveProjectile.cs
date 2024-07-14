@@ -9,6 +9,7 @@ public class WaveProjectile : Projectile
     [SerializeField] private float period = (2 * Mathf.PI);
     [SerializeField] private float angle = 90f;
 
+    private float rotationSpeed;
     private float alpha;
     private Vector2 originalPos;
     private float time = 0f;
@@ -16,6 +17,7 @@ public class WaveProjectile : Projectile
     // Start is called before the first frame update
     void Start()
     {
+        rotationSpeed = movementSpeed / 2;
         alpha = Mathf.Deg2Rad * angle;
         amplitude = isReflected ? -1f : 1f;
         originalPos = transform.position;
@@ -26,11 +28,12 @@ public class WaveProjectile : Projectile
     {
         time += Time.deltaTime;
         transform.position = calc();
+        transform.Rotate(0, 0, 360 * rotationSpeed * Time.deltaTime);
     }
 
     private Vector2 calc()
     {
-        float x = speed * time;
+        float x = movementSpeed * time;
         float b = (2 * Mathf.PI) / period;
         Vector2 pos = originalPos + new Vector2(x / b, amplitude * Mathf.Sin(x));
 

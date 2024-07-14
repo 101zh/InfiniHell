@@ -31,7 +31,7 @@ public class CurvingProjectile : Projectile
     {
         if (_counter < _allPositions.Count)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _allPositions[_counter], speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _allPositions[_counter], movementSpeed * Time.deltaTime);
             if (Vector3.Distance(transform.position, _allPositions[_counter]) < DistanceToTarget) _counter++;
         }
     }
