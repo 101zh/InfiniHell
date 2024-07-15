@@ -5,13 +5,14 @@ using UnityEngine.InputSystem;
 
 public class Player_Controller : MonoBehaviour
 {
-    [SerializeField] int movementSpeed = 1250;
+    [SerializeField] float movementSpeed = 2.5f;
     [SerializeField] private ParticleSystem deathParticles;
     private Rigidbody2D rb2D;
     private CircleCollider2D circleCollider2D;
     private SpriteRenderer spriteRenderer;
     private InfiniHellInput inputActions;
 
+    private Vector2 direction;
     private InputAction move;
     private bool isDead = false;
 
@@ -40,12 +41,17 @@ public class Player_Controller : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void Update()
+    {
+        direction = move.ReadValue<Vector2>();
+    }
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (!isDead)
         {
-            rb2D.velocity = move.ReadValue<Vector2>().normalized * movementSpeed * Time.deltaTime;
+            rb2D.velocity = direction.normalized * movementSpeed;
         }
     }
 
