@@ -21,10 +21,102 @@ public class GameManager : MonoBehaviour
         updateBoundaries();
         Debug.Log(screenHeight);
         Debug.Log(screenWidth);
-        StartCoroutine(testPattern());
+        StartCoroutine(IndefiniteQuadruplePattern());
     }
 
-    IEnumerator testPattern()
+    bool isIndefiniteRunning = false;
+
+    IEnumerator IndefiniteQuadruplePattern()
+    {
+        isIndefiniteRunning = true;
+        Vector2[] spawnPositions = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
+        GameObject[] spawnerInstances = new GameObject[4];
+        for (int i = 0; i < spawnerInstances.Length; i++)
+        {
+            spawnerInstances[i] = Instantiate(spawner, spawnPositions[i], spawner.transform.rotation);
+        }
+
+        while (isIndefiniteRunning)
+        {
+            Vector2[] destinations = generatePosInAll4Quandrants(generateRandomPositionWithinBounds());
+            Vector2[] velocities = new Vector2[4];
+            for (int i = 0; i < spawnerInstances.Length; i++) velocities[i] = Vector2.zero;
+
+            while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.0005)
+            {
+                for (int i = 0; i < spawnerInstances.Length; i++)
+                    spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, 10f, Time.deltaTime);
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.25f);
+            float waitTime = 0.0f;
+            for (int i = 0; i < spawnerInstances.Length; i++)
+            {
+                waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(3, 10);
+            }
+            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(0.25f);
+        }
+    }
+
+    IEnumerator QuadruplePattern()
+    {
+        Vector2[] spawnPositions = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
+        GameObject[] spawnerInstances = new GameObject[4];
+        for (int i = 0; i < spawnerInstances.Length; i++)
+        {
+            spawnerInstances[i] = Instantiate(spawner, spawnPositions[i], spawner.transform.rotation);
+        }
+
+        Vector2[] destinations = generatePosInAll4Quandrants(generateRandomPositionWithinBounds());
+        Vector2[] velocities = new Vector2[4];
+        for (int i = 0; i < spawnerInstances.Length; i++) velocities[i] = Vector2.zero;
+
+        while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.0005)
+        {
+            for (int i = 0; i < spawnerInstances.Length; i++)
+                spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, 10f, Time.deltaTime);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.25f);
+        float waitTime = 0.0f;
+        for (int i = 0; i < spawnerInstances.Length; i++)
+        {
+            waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(3, 10);
+        }
+        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(0.25f);
+
+        destinations = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
+        for (int i = 0; i < spawnerInstances.Length; i++) velocities[i] = Vector2.zero;
+
+        while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.0005)
+        {
+            for (int i = 0; i < spawnerInstances.Length; i++)
+                spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, 10f, Time.deltaTime);
+            yield return null;
+        }
+
+        foreach (GameObject spawner in spawnerInstances)
+        {
+            Destroy(spawner);
+        }
+    }
+
+    Vector2[] generatePosInAll4Quandrants(Vector2 point)
+    {
+        Vector2[] points = new Vector2[4];
+        points[0] = point;
+        points[1] = new Vector2(-point.x, point.y);
+        points[2] = new Vector2(point.x, -point.y);
+        points[3] = new Vector2(-point.x, -point.y);
+
+        return points;
+    }
+
+    IEnumerator SingularPattern()
     {
         GameObject spawnerInstance = Instantiate(spawner, generateRandomPositionOutsideBounds(), spawner.transform.rotation);
         Vector2 destination = generateRandomPositionWithinBounds();
@@ -48,7 +140,6 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         Destroy(spawnerInstance);
-
     }
 
     private Vector2 generateRandomPositionWithinBounds()
