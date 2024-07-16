@@ -6,7 +6,18 @@ public class SquareSpawner : BulletSpawner
 {
     //Transform[] firePoints [Top, Right, Down, Left]
 
-    IEnumerator SpinFire(int times, float rotationOffset, float bulletAngle = 0)
+    /// <summary>
+    /// Initiates bullet firing pattern. 
+    /// </summary>
+    /// <param name="times"></param>
+    /// <returns>The seconds for firing pattern to end</returns>
+    public float SpinFire(int times, float rotationAngle, float bulletAngle = 0)
+    {
+        StartCoroutine(SpinFireCoroutine(times, rotationAngle, bulletAngle));
+        return timedelay * times;
+    }
+
+    private IEnumerator SpinFireCoroutine(int times, float rotationAngle, float bulletAngle = 0)
     {
         for (int j = 0; j < times; j++)
         {
@@ -17,7 +28,7 @@ public class SquareSpawner : BulletSpawner
             }
 
             yield return new WaitForSeconds(timedelay);
-            transform.Rotate(0, 0, rotationOffset);
+            transform.Rotate(0, 0, rotationAngle);
         }
     }
 
