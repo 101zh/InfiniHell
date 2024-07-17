@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,88 +12,113 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float spawnerSize = 1f;
     [SerializeField] private GameObject deathMenu;
 
+    private readonly (float, float) bulletSpeed = (1f, 4f);
+    private readonly (float, float) spawnerSpeed = (10f, float.MaxValue);
+    private readonly (int, int) numOfPatterns = (0, 4);
+    private readonly (float, float) shotDelay = (0.15f, 0.75f);
+
+    [SerializeField] private float curDifficulty = 0.0f;
+
+    [SerializeField] float timer = 0f;
+    private float curMinBulletSpeed = 1f;
+    private bool reachedMaxPatterns = false;
+    private float curSpawnerSpeed;
+    private int curMaxNumOfPatterns = 1;
+    private float curPatternIncreaseThreshold = 0.3f;
     private static float screenWidth; // In Coordinate Values
     private static float screenHeight;// In Coordinate Values
+    [SerializeField] int curNumOfActivePatterns = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         updateBoundaries();
-        StartCoroutine(IndefiniteQuadruplePattern());
+        curSpawnerSpeed = (spawnerSpeed.Item2 - spawnerSpeed.Item1) * curDifficulty + spawnerSpeed.Item1;
     }
 
-    bool isIndefiniteRunning = false;
 
-    IEnumerator IndefiniteQuadruplePattern()
+    void Update()
     {
-        isIndefiniteRunning = true;
-        Vector2[] spawnPositions = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
-        GameObject[] spawnerInstances = new GameObject[4];
-        for (int i = 0; i < spawnerInstances.Length; i++)
+        timer += Time.deltaTime;
+        if (timer > 15f)
         {
-            spawnerInstances[i] = Instantiate(spawner, spawnPositions[i], spawner.transform.rotation);
+            timer = 0f;
+            curDifficulty += 0.1f;
+            curMinBulletSpeed = curDifficulty * (bulletSpeed.Item2 - 2) > bulletSpeed.Item2 - 2 ? bulletSpeed.Item2 - 2 : curDifficulty * (bulletSpeed.Item2 - 2);
+            curSpawnerSpeed = (spawnerSpeed.Item2 - spawnerSpeed.Item1) * curDifficulty + spawnerSpeed.Item1;
+            if (!reachedMaxPatterns && curDifficulty > curPatternIncreaseThreshold)
+            {
+                curPatternIncreaseThreshold += 0.3f;
+                curMaxNumOfPatterns += 1;
+                reachedMaxPatterns = curMaxNumOfPatterns == numOfPatterns.Item2;
+            }
         }
 
-        while (isIndefiniteRunning)
+
+        if (curNumOfActivePatterns < curMaxNumOfPatterns)
         {
-            Vector2[] destinations = generatePosInAll4Quandrants(generateRandomPositionWithinBounds());
-            Vector2[] velocities = new Vector2[4];
-            for (int i = 0; i < spawnerInstances.Length; i++) velocities[i] = Vector2.zero;
-
-            while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.0005)
+            if (percentage(0.5f))
             {
-                for (int i = 0; i < spawnerInstances.Length; i++)
-                    spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, 10f, Time.deltaTime);
-                yield return null;
+                selectRandomPattern();
             }
-
-            yield return new WaitForSeconds(0.25f);
-            float waitTime = 0.0f;
-            for (int i = 0; i < spawnerInstances.Length; i++)
+            else
             {
-                waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(3, 10);
+                StartCoroutine(TheNoPattern(5f));
             }
-            yield return new WaitForSeconds(waitTime);
-            yield return new WaitForSeconds(0.25f);
         }
+
+    }
+
+    IEnumerator TheNoPattern(float seconds)
+    {
+        curNumOfActivePatterns++;
+        yield return new WaitForSeconds(seconds);
+        curNumOfActivePatterns--;
     }
 
     IEnumerator QuadruplePattern()
     {
+        curNumOfActivePatterns++;
         Vector2[] spawnPositions = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
         GameObject[] spawnerInstances = new GameObject[4];
+
+        float timeDelay = (shotDelay.Item2 - ((shotDelay.Item2 - shotDelay.Item1) * curDifficulty)) < shotDelay.Item1 ? shotDelay.Item1 : (shotDelay.Item2 - ((shotDelay.Item2 - shotDelay.Item1) * curDifficulty));
+        int times = percentage(0.5f) ? Random.Range(3, 6) : Random.Range(10, 12);
+
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
             spawnerInstances[i] = Instantiate(spawner, spawnPositions[i], spawner.transform.rotation);
+            spawnerInstances[i].GetComponent<SquareSpawner>().setTimeDelay(timeDelay);
+            spawnerInstances[i].GetComponent<SquareSpawner>().setBulletSpeed(Random.Range(curMinBulletSpeed, bulletSpeed.Item2));
         }
 
         Vector2[] destinations = generatePosInAll4Quandrants(generateRandomPositionWithinBounds());
         Vector2[] velocities = new Vector2[4];
         for (int i = 0; i < spawnerInstances.Length; i++) velocities[i] = Vector2.zero;
 
-        while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.0005)
+        while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.005)
         {
             for (int i = 0; i < spawnerInstances.Length; i++)
-                spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, 10f, Time.deltaTime);
+                spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, curSpawnerSpeed, Time.deltaTime);
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.25f);
+
         float waitTime = 0.0f;
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
-            waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(3, 10);
+            waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(times, 9f);
         }
         yield return new WaitForSeconds(waitTime);
-        yield return new WaitForSeconds(0.25f);
+
 
         destinations = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
         for (int i = 0; i < spawnerInstances.Length; i++) velocities[i] = Vector2.zero;
 
-        while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.0005)
+        while (Vector2.Distance(destinations[0], (Vector2)spawnerInstances[0].transform.position) > 0.005)
         {
             for (int i = 0; i < spawnerInstances.Length; i++)
-                spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, 10f, Time.deltaTime);
+                spawnerInstances[i].transform.position = Vector2.SmoothDamp(spawnerInstances[i].transform.position, destinations[i], ref velocities[i], 0.5f, curSpawnerSpeed, Time.deltaTime);
             yield return null;
         }
 
@@ -100,8 +126,52 @@ public class GameManager : MonoBehaviour
         {
             Destroy(spawner);
         }
+        curNumOfActivePatterns--;
     }
 
+    IEnumerator SingularPattern()
+    {
+        curNumOfActivePatterns++;
+        GameObject spawnerInstance = Instantiate(spawner, generateRandomPositionOutsideBounds(), spawner.transform.rotation);
+        int times = Random.Range(0, 7);
+        float rotation = Random.Range(2f, 45f);
+        spawnerInstance.GetComponent<SquareSpawner>().setTimeDelay(Random.Range(shotDelay.Item1, shotDelay.Item2));
+        spawnerInstance.GetComponent<SquareSpawner>().setBulletSpeed(Random.Range(bulletSpeed.Item1, curMinBulletSpeed));
+        Vector2 destination = generateRandomPositionWithinBounds();
+        Vector2 velocity = Vector2.zero;
+
+        while (Vector2.Distance(destination, (Vector2)spawnerInstance.transform.position) > 0.005)
+        {
+            spawnerInstance.transform.position = Vector2.SmoothDamp(spawnerInstance.transform.position, destination, ref velocity, 0.5f, curSpawnerSpeed, Time.deltaTime);
+            yield return null;
+        }
+
+
+        yield return new WaitForSeconds(spawnerInstance.GetComponent<SquareSpawner>().SpinFire(times, rotation));
+
+
+        destination = generateRandomPositionOutsideBounds();
+        velocity = Vector2.zero;
+        while (Vector2.Distance(destination, (Vector2)spawnerInstance.transform.position) > 0.005)
+        {
+            spawnerInstance.transform.position = Vector2.SmoothDamp(spawnerInstance.transform.position, destination, ref velocity, 0.5f, curSpawnerSpeed, Time.deltaTime);
+            yield return null;
+        }
+        Destroy(spawnerInstance);
+        curNumOfActivePatterns--;
+    }
+
+    private void selectRandomPattern()
+    {
+        int rand = Random.Range(0, 2);
+        switch (rand)
+        {
+            case 0:
+                StartCoroutine(QuadruplePattern()); break;
+            case 1:
+                StartCoroutine(SingularPattern()); break;
+        }
+    }
     Vector2[] generatePosInAll4Quandrants(Vector2 point)
     {
         Vector2[] points = new Vector2[4];
@@ -111,32 +181,6 @@ public class GameManager : MonoBehaviour
         points[3] = new Vector2(-point.x, -point.y);
 
         return points;
-    }
-
-    IEnumerator SingularPattern()
-    {
-        GameObject spawnerInstance = Instantiate(spawner, generateRandomPositionOutsideBounds(), spawner.transform.rotation);
-        Vector2 destination = generateRandomPositionWithinBounds();
-        Vector2 velocity = Vector2.zero;
-
-        while (Vector2.Distance(destination, (Vector2)spawnerInstance.transform.position) > 0.0005)
-        {
-            spawnerInstance.transform.position = Vector2.SmoothDamp(spawnerInstance.transform.position, destination, ref velocity, 0.5f, 10f, Time.deltaTime);
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(0.25f);
-        yield return new WaitForSeconds(spawnerInstance.GetComponent<SquareSpawner>().SpinFire(3, 10));
-        yield return new WaitForSeconds(0.25f);
-
-        destination = generateRandomPositionOutsideBounds();
-        velocity = Vector2.zero;
-        while (Vector2.Distance(destination, (Vector2)spawnerInstance.transform.position) > 0.0005)
-        {
-            spawnerInstance.transform.position = Vector2.SmoothDamp(spawnerInstance.transform.position, destination, ref velocity, 0.5f, 10f, Time.deltaTime);
-            yield return null;
-        }
-        Destroy(spawnerInstance);
     }
 
     private Vector2 generateRandomPositionWithinBounds()
@@ -149,13 +193,13 @@ public class GameManager : MonoBehaviour
 
     private Vector2 generateRandomPositionOutsideBounds()
     {
-        bool leftRight = fiftyPercent();
+        bool leftRight = percentage(0.5f);
 
         float xMin = leftRight ? screenWidth + wallThickness : 0;
         float yMin = leftRight ? 0 : screenHeight + wallThickness;
 
-        int negativeOrPositiveX = fiftyPercent() ? -1 : 1;
-        int negativeOrPositiveY = fiftyPercent() ? -1 : 1;
+        int negativeOrPositiveX = percentage(0.5f) ? -1 : 1;
+        int negativeOrPositiveY = percentage(0.5f) ? -1 : 1;
         float randX = Random.Range(xMin, screenWidth + 5f) * negativeOrPositiveX;
         float randY = Random.Range(yMin, screenHeight + 5f) * negativeOrPositiveY;
 
@@ -170,10 +214,14 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    /// <summary>Returns true 50% of the time</summary>
-    public bool fiftyPercent()
+    /// <summary>
+    /// Returns true <paramref name="percentage"/> of the time
+    /// </summary>
+    /// <param name="percentage"></param>
+    /// <returns>true or false</returns>
+    public bool percentage(float percentage)
     {
-        return Random.Range(0, 2) == 0;
+        return Random.Range(0.0f, 1.0f) < percentage;
     }
 
     public void updateBoundaries()

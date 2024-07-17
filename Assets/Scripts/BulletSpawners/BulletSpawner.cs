@@ -8,8 +8,8 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] protected Transform[] firePoints;
     [SerializeField] protected float timedelay = 0.75f;
 
-    protected static GameObject straightProjectile;
-    protected static GameObject waveProjectile;
+    protected GameObject straightProjectile;
+    protected GameObject waveProjectile;
     void Awake()
     {
         if (straightProjectile == null)
@@ -28,5 +28,16 @@ public class BulletSpawner : MonoBehaviour
         }
 
         return bullets;
+    }
+
+    public void setBulletSpeed(float speed)
+    {
+        straightProjectile.GetComponent<Projectile>().setBulletSpeed(speed);
+        waveProjectile.GetComponent<Projectile>().setBulletSpeed(speed);
+    }
+
+    public void setTimeDelay(float time)
+    {
+        timedelay = time < 0 ? 0 : time;
     }
 }

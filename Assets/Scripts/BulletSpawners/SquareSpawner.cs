@@ -17,7 +17,7 @@ public class SquareSpawner : BulletSpawner
         return timedelay * times;
     }
 
-    private IEnumerator SpinFireCoroutine(int times, float rotationAngle, float bulletAngle = 0)
+    private IEnumerator SpinFireCoroutine(int times, float rotationAngle, float bulletAngle)
     {
         for (int j = 0; j < times; j++)
         {

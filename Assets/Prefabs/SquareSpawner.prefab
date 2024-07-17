@@ -199,6 +199,7 @@ MonoBehaviour:
   - {fileID: 4300318414121149683}
   - {fileID: 5179498972600469100}
   - {fileID: 3609984857607251792}
+  timedelay: 0.75
 --- !u!1 &6740439911368737564
 GameObject:
   m_ObjectHideFlags: 0
