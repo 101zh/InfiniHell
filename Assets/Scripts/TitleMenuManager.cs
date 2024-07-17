@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class TitleMenuManager : MonoBehaviour
 {
+    [SerializeField] private GameObject titleMenu;
+    [SerializeField] private GameObject optionsMenu;
+
     public void OnStartButtonPress()
     {
         Debug.Log("Load Main Game");
@@ -17,6 +20,13 @@ public class TitleMenuManager : MonoBehaviour
     }
     public void OnOptionsButtonPress()
     {
-        Debug.Log("this would open the options menu if I created it");
+        titleMenu.SetActive(false);
+        optionsMenu.SetActive(true);
+    }
+
+    public void onBackButtonPressed()
+    {
+        optionsMenu.SetActive(false);
+        titleMenu.SetActive(true);
     }
 }
