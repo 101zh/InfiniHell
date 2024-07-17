@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // [TopWall, RightWall, BottomWall, LeftWall]
     [SerializeField] private GameObject spawner;
-    [SerializeField] private GameObject a;
-    [SerializeField] private BoxCollider2D[] walls;
+    [SerializeField] private BoxCollider2D[] walls; // [TopWall, RightWall, BottomWall, LeftWall]
     [SerializeField] private Camera mainCam;
     [SerializeField] private float wallThickness = 1f;
     [SerializeField] private float spawnerSize = 1f;
+    [SerializeField] private GameObject deathMenu;
 
     private static float screenWidth; // In Coordinate Values
     private static float screenHeight;// In Coordinate Values
@@ -19,8 +18,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         updateBoundaries();
-        Debug.Log(screenHeight);
-        Debug.Log(screenWidth);
         StartCoroutine(IndefiniteQuadruplePattern());
     }
 
@@ -197,5 +194,10 @@ public class GameManager : MonoBehaviour
 
         walls[3].size = new Vector2(wallThickness, screenHeight * 2f);
         walls[3].transform.position = new Vector2(-screenWidth - (0.5f * wallThickness), 0);
+    }
+
+    public void activateDeathMenu()
+    {
+        deathMenu.SetActive(true);
     }
 }

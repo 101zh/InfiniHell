@@ -59,11 +59,12 @@ public class Player_Controller : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("Projectile"))
         {
-            StartCoroutine(die());
+            die();
+            GameObject.Find("GameManager").GetComponent<GameManager>().activateDeathMenu();
         }
     }
 
-    private IEnumerator die()
+    private void die()
     {
         isDead = true;
         spriteRenderer.enabled = false;
@@ -72,7 +73,5 @@ public class Player_Controller : MonoBehaviour
         circleCollider2D.enabled = false;
 
         deathParticles.Play();
-        yield return new WaitForSeconds(3f);
-        Destroy(gameObject);
     }
 }
