@@ -21,7 +21,7 @@ public class InGameMenuManager : MonoBehaviour
 
     public void onRetryDifficulty()
     {
-        GameManager.setDiff(gameManager.getCurDifficulty());
+        GameManager.setDiff(gameManager.getDifficultyOnDeath());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

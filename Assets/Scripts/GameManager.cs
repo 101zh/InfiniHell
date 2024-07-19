@@ -301,7 +301,7 @@ public class GameManager : MonoBehaviour
         return timeOnDeath;
     }
 
-    public float getCurDifficulty()
+    public float getDifficultyOnDeath()
     {
         return diffOnDeath;
     }
