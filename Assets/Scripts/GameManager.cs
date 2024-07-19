@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,8 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float wallThickness = 1f;
     [SerializeField] private float spawnerSize = 1f;
     [SerializeField] private GameObject deathMenu;
+    [SerializeField] private bool tutorialLevel = false;
 
-    private readonly (float, float) bulletSpeed = (1f, 4f);
+    private readonly (float, float) bulletSpeeds = (1f, 4f);
     private readonly (float, float) spawnerSpeed = (10f, float.MaxValue);
     private readonly (int, int) numOfPatterns = (0, 4);
     private readonly (float, float) shotDelay = (0.15f, 0.75f);
@@ -34,39 +36,56 @@ public class GameManager : MonoBehaviour
     {
         updateBoundaries();
         curSpawnerSpeed = (spawnerSpeed.Item2 - spawnerSpeed.Item1) * curDifficulty + spawnerSpeed.Item1;
+        if (tutorialLevel) { StartCoroutine(Tutorial()); }
+        else
+        {
+            StartCoroutine(mainGame());
+        }
     }
 
-
-    void Update()
+    IEnumerator mainGame()
     {
-        timer += Time.deltaTime;
-        if (timer > 15f)
+        while (true)
         {
-            timer = 0f;
-            curDifficulty += 0.1f;
-            curMinBulletSpeed = curDifficulty * (bulletSpeed.Item2 - 2) > bulletSpeed.Item2 - 2 ? bulletSpeed.Item2 - 2 : curDifficulty * (bulletSpeed.Item2 - 2);
-            curSpawnerSpeed = (spawnerSpeed.Item2 - spawnerSpeed.Item1) * curDifficulty + spawnerSpeed.Item1;
-            if (!reachedMaxPatterns && curDifficulty > curPatternIncreaseThreshold)
+            timer += Time.deltaTime;
+            if (timer > 15f)
             {
-                curPatternIncreaseThreshold += 0.3f;
-                curMaxNumOfPatterns += 1;
-                reachedMaxPatterns = curMaxNumOfPatterns == numOfPatterns.Item2;
+                timer = 0f;
+                curDifficulty += 0.1f;
+                curMinBulletSpeed = curDifficulty * (bulletSpeeds.Item2 - 2) > bulletSpeeds.Item2 - 2 ? bulletSpeeds.Item2 - 2 : curDifficulty * (bulletSpeeds.Item2 - 2);
+                curSpawnerSpeed = (spawnerSpeed.Item2 - spawnerSpeed.Item1) * curDifficulty + spawnerSpeed.Item1;
+                if (!reachedMaxPatterns && curDifficulty > curPatternIncreaseThreshold)
+                {
+                    curPatternIncreaseThreshold += 0.3f;
+                    curMaxNumOfPatterns += 1;
+                    reachedMaxPatterns = curMaxNumOfPatterns == numOfPatterns.Item2;
+                }
             }
+
+
+            if (curNumOfActivePatterns < curMaxNumOfPatterns)
+            {
+                if (percentage(0.5f))
+                {
+                    selectRandomPattern();
+                }
+                else
+                {
+                    StartCoroutine(TheNoPattern(5f));
+                }
+            }
+            yield return null;
         }
+    }
 
-
-        if (curNumOfActivePatterns < curMaxNumOfPatterns)
-        {
-            if (percentage(0.5f))
-            {
-                selectRandomPattern();
-            }
-            else
-            {
-                StartCoroutine(TheNoPattern(5f));
-            }
-        }
-
+    IEnumerator Tutorial()
+    {
+        yield return new WaitForSeconds(8f);
+        StartCoroutine(SingularPattern(2, 9f, 1f, 1f));
+        yield return new WaitForSeconds(8f);
+        StartCoroutine(QuadruplePattern(6, 9f, 0.75f, 1f));
+        yield return new WaitForSeconds(14f);
+        SceneManager.LoadScene("MainScene");
     }
 
     IEnumerator TheNoPattern(float seconds)
@@ -76,20 +95,26 @@ public class GameManager : MonoBehaviour
         curNumOfActivePatterns--;
     }
 
-    IEnumerator QuadruplePattern()
+    void StartRandomQuadruplePattern()
+    {
+        int times = percentage(0.5f) ? Random.Range(3, 6) : Random.Range(10, 12);
+        float timeDelay = (shotDelay.Item2 - ((shotDelay.Item2 - shotDelay.Item1) * curDifficulty)) < shotDelay.Item1 ? shotDelay.Item1 : (shotDelay.Item2 - ((shotDelay.Item2 - shotDelay.Item1) * curDifficulty));
+        float bulletSpeed = Random.Range(curMinBulletSpeed, bulletSpeeds.Item2);
+
+        StartCoroutine(QuadruplePattern(times, 9f, timeDelay, bulletSpeed));
+    }
+
+    IEnumerator QuadruplePattern(int times, float rotation, float timeDelay, float bulletSpeed)
     {
         curNumOfActivePatterns++;
         Vector2[] spawnPositions = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
         GameObject[] spawnerInstances = new GameObject[4];
 
-        float timeDelay = (shotDelay.Item2 - ((shotDelay.Item2 - shotDelay.Item1) * curDifficulty)) < shotDelay.Item1 ? shotDelay.Item1 : (shotDelay.Item2 - ((shotDelay.Item2 - shotDelay.Item1) * curDifficulty));
-        int times = percentage(0.5f) ? Random.Range(3, 6) : Random.Range(10, 12);
-
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
             spawnerInstances[i] = Instantiate(spawner, spawnPositions[i], spawner.transform.rotation);
             spawnerInstances[i].GetComponent<SquareSpawner>().setTimeDelay(timeDelay);
-            spawnerInstances[i].GetComponent<SquareSpawner>().setBulletSpeed(Random.Range(curMinBulletSpeed, bulletSpeed.Item2));
+            spawnerInstances[i].GetComponent<SquareSpawner>().setBulletSpeed(bulletSpeed);
         }
 
         Vector2[] destinations = generatePosInAll4Quandrants(generateRandomPositionWithinBounds());
@@ -107,7 +132,7 @@ public class GameManager : MonoBehaviour
         float waitTime = 0.0f;
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
-            waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(times, 9f);
+            waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(times, rotation);
         }
         yield return new WaitForSeconds(waitTime);
 
@@ -129,14 +154,22 @@ public class GameManager : MonoBehaviour
         curNumOfActivePatterns--;
     }
 
-    IEnumerator SingularPattern()
+    void StartRandomSingularPattern()
+    {
+        int times = Random.Range(0, 7);
+        float rotation = Random.Range(2f, 45f);
+        float timeDelay = Random.Range(shotDelay.Item1, shotDelay.Item2);
+        float bulletSpeed = Random.Range(bulletSpeeds.Item1, curMinBulletSpeed);
+
+        StartCoroutine(SingularPattern(times, rotation, timeDelay, bulletSpeed));
+    }
+
+    IEnumerator SingularPattern(int times, float rotation, float timeDelay, float bulletSpeed)
     {
         curNumOfActivePatterns++;
         GameObject spawnerInstance = Instantiate(spawner, generateRandomPositionOutsideBounds(), spawner.transform.rotation);
-        int times = Random.Range(0, 7);
-        float rotation = Random.Range(2f, 45f);
-        spawnerInstance.GetComponent<SquareSpawner>().setTimeDelay(Random.Range(shotDelay.Item1, shotDelay.Item2));
-        spawnerInstance.GetComponent<SquareSpawner>().setBulletSpeed(Random.Range(bulletSpeed.Item1, curMinBulletSpeed));
+        spawnerInstance.GetComponent<SquareSpawner>().setTimeDelay(timeDelay);
+        spawnerInstance.GetComponent<SquareSpawner>().setBulletSpeed(bulletSpeed);
         Vector2 destination = generateRandomPositionWithinBounds();
         Vector2 velocity = Vector2.zero;
 
@@ -167,9 +200,9 @@ public class GameManager : MonoBehaviour
         switch (rand)
         {
             case 0:
-                StartCoroutine(QuadruplePattern()); break;
+                StartRandomQuadruplePattern(); break;
             case 1:
-                StartCoroutine(SingularPattern()); break;
+                StartRandomSingularPattern(); break;
         }
     }
     Vector2[] generatePosInAll4Quandrants(Vector2 point)
