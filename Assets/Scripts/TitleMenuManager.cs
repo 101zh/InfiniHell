@@ -1,12 +1,20 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TitleMenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject titleMenu;
+    [SerializeField] private GameObject recordsMenu;
     [SerializeField] private GameObject optionsMenu;
+    [SerializeField] private TMP_Text statsText;
+
+    private void Start()
+    {
+        statsText.text = $"Longest Time Survived ★:\n{PlayerPrefs.GetFloat("BestTime", 0.0f)}\nHighest Difficulty Reached ★:\n{PlayerPrefs.GetFloat("BestDiff", 0.0f)}";
+    }
 
     public void OnStartButtonPress()
     {
@@ -18,10 +26,10 @@ public class TitleMenuManager : MonoBehaviour
         Debug.Log("Quitting");
         Application.Quit();
     }
-    public void OnOptionsButtonPress()
+    public void OnMenuChangeButtonPress(GameObject menu)
     {
         titleMenu.SetActive(false);
-        optionsMenu.SetActive(true);
+        menu.SetActive(true);
     }
 
     public void OnTutorialButtonPress()
@@ -31,6 +39,7 @@ public class TitleMenuManager : MonoBehaviour
 
     public void onBackButtonPressed()
     {
+        recordsMenu.SetActive(false);
         optionsMenu.SetActive(false);
         titleMenu.SetActive(true);
     }
