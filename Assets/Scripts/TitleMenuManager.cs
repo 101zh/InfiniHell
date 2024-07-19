@@ -24,6 +24,11 @@ public class TitleMenuManager : MonoBehaviour
         optionsMenu.SetActive(true);
     }
 
+    public void OnTutorialButtonPress()
+    {
+        SceneManager.LoadScene("TutorialScene");
+    }
+
     public void onBackButtonPressed()
     {
         optionsMenu.SetActive(false);

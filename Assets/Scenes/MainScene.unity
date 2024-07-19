@@ -469,6 +469,7 @@ MonoBehaviour:
   wallThickness: 1
   spawnerSize: 1
   deathMenu: {fileID: 277659343}
+  tutorialLevel: 0
   curDifficulty: 0
   timer: 0
   curNumOfActivePatterns: 0
@@ -760,7 +761,7 @@ MonoBehaviour:
   m_RefResolutionX: 270
   m_RefResolutionY: 480
   m_CropFrame: 0
-  m_GridSnapping: 1
+  m_GridSnapping: 2
   m_FilterMode: 0
   m_UpscaleRT: 0
   m_PixelSnapping: 0
