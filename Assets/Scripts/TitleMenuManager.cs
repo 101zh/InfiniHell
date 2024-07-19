@@ -34,4 +34,9 @@ public class TitleMenuManager : MonoBehaviour
         optionsMenu.SetActive(false);
         titleMenu.SetActive(true);
     }
+
+    private void OnApplicationQuit()
+    {
+        GameManager.clearDiff();
+    }
 }

@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private float curDifficulty = 0.0f;
 
+    int timerSucessions = 0;
     [SerializeField] float timer = 0f;
     private float curMinBulletSpeed = 1f;
     private bool reachedMaxPatterns = false;
@@ -34,6 +35,12 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PlayerPrefs.GetInt("isSetDiff", 1) == 0)
+        {
+            curDifficulty = PlayerPrefs.GetFloat("setDiff", 0.0f);
+        }
+
+
         updateBoundaries();
         curSpawnerSpeed = (spawnerSpeed.Item2 - spawnerSpeed.Item1) * curDifficulty + spawnerSpeed.Item1;
         if (tutorialLevel) { StartCoroutine(Tutorial()); }
@@ -50,6 +57,7 @@ public class GameManager : MonoBehaviour
             timer += Time.deltaTime;
             if (timer > 15f)
             {
+                timerSucessions++;
                 timer = 0f;
                 curDifficulty += 0.1f;
                 curMinBulletSpeed = curDifficulty * (bulletSpeeds.Item2 - 2) > bulletSpeeds.Item2 - 2 ? bulletSpeeds.Item2 - 2 : curDifficulty * (bulletSpeeds.Item2 - 2);
@@ -277,8 +285,36 @@ public class GameManager : MonoBehaviour
         walls[3].transform.position = new Vector2(-screenWidth - (0.5f * wallThickness), 0);
     }
 
+    private float diffOnDeath;
+    private float timeOnDeath;
+
     public void activateDeathMenu()
     {
+        diffOnDeath = curDifficulty;
+        timeOnDeath = timer + (timerSucessions * 15f);
+
         deathMenu.SetActive(true);
+    }
+
+    public float getTimeSurvived()
+    {
+        return timeOnDeath;
+    }
+
+    public float getCurDifficulty()
+    {
+        return diffOnDeath;
+    }
+
+    public static void setDiff(float diff)
+    {
+        PlayerPrefs.SetInt("isSetDiff", 0);
+        PlayerPrefs.SetFloat("setDiff", diff);
+    }
+
+    public static void clearDiff()
+    {
+        PlayerPrefs.SetInt("isSetDiff", 1);
+        PlayerPrefs.SetFloat("setDiff", 0.0f);
     }
 }
