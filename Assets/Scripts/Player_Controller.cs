@@ -60,7 +60,7 @@ public class Player_Controller : MonoBehaviour
         if (collision.gameObject.tag.Equals("Projectile"))
         {
             die();
-            GameObject.Find("GameManager").GetComponent<GameManager>().activateDeathMenu();
+            GameObject.Find("GameManager").GetComponent<GameManager>().onDeath();
         }
     }
 

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private InGameMenuManager menuManager;
     [SerializeField] private GameObject spawner;
     [SerializeField] private BoxCollider2D[] walls; // [TopWall, RightWall, BottomWall, LeftWall]
     [SerializeField] private Camera mainCam;
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private float curDifficulty = 0.0f;
 
+    private bool dead = false;
     int timerSucessions = 0;
     [SerializeField] float timer = 0f;
     private float curMinBulletSpeed = 1f;
@@ -93,7 +95,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(8f);
         StartCoroutine(QuadruplePattern(6, 9f, 0.75f, 1f));
         yield return new WaitForSeconds(14f);
-        SceneManager.LoadScene("MainScene");
+        if (!dead)
+            SceneManager.LoadScene("MainScene");
     }
 
     IEnumerator TheNoPattern(float seconds)
@@ -288,12 +291,23 @@ public class GameManager : MonoBehaviour
     private float diffOnDeath;
     private float timeOnDeath;
 
-    public void activateDeathMenu()
+    public void onDeath()
     {
+        dead = true;
         diffOnDeath = curDifficulty;
         timeOnDeath = timer + (timerSucessions * 15f);
+        menuManager.activateDeathMenu();
 
-        deathMenu.SetActive(true);
+    }
+
+    public float getTime()
+    {
+        return timer + (timerSucessions * 15f);
+    }
+
+    public float getCurDifficulty()
+    {
+        return curDifficulty;
     }
 
     public float getTimeSurvived()
