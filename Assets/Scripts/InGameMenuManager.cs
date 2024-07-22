@@ -48,17 +48,20 @@ public class InGameMenuManager : MonoBehaviour
     public void onTitleButtonPressed()
     {
         GameManager.clearDiff();
+        unpause();
         SceneManager.LoadScene("TitleScene");
     }
 
     public void onRetryFromStartPressed()
     {
         GameManager.clearDiff();
+        unpause();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void onRetryDifficulty()
     {
+        unpause();
         GameManager.setDiff(gameManager.getDifficultyOnDeath());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

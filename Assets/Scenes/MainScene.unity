@@ -409,6 +409,7 @@ MonoBehaviour:
   spawnerSize: 1
   deathMenu: {fileID: 277659343}
   tutorialLevel: 0
+  onScreenJoySticks: {fileID: 534733467}
   curDifficulty: 0
   timer: 0
   curNumOfActivePatterns: 0
@@ -724,7 +725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &534733468
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3802,7 +3803,7 @@ MonoBehaviour:
     m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 75a5a4b4-c939-496b-aaff-323322874e3c
+    m_Id: 71f41544-431a-4998-9200-f56e1e51c14d
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -3811,7 +3812,7 @@ MonoBehaviour:
     m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: 2c8bd878-a0b5-486c-b57c-7cebe46a249b
+    m_Id: 3b16ad84-9d82-46fb-895b-c2fca8a28ffa
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []

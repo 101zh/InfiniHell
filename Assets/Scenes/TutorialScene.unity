@@ -1300,7 +1300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &617336160
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3390,6 +3390,7 @@ MonoBehaviour:
   spawnerSize: 1
   deathMenu: {fileID: 488893377}
   tutorialLevel: 1
+  onScreenJoySticks: {fileID: 617336159}
   curDifficulty: 0
   timer: 0
   curNumOfActivePatterns: 0

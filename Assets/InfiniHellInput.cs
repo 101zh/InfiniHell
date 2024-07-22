@@ -28,9 +28,36 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
             ""id"": ""c5648b50-6b93-4dfa-b32d-503e73f83e63"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
+                    ""name"": ""MoveLeftStick"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""be7265fc-13e0-4a39-b281-254deaa0433c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MoveWASD"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0c2aecac-1b82-446f-b5de-f120a7014366"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MoveArrows"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a203b244-43bf-4620-bd79-3239f6c100ea"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MoveMouse"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""3f624380-c175-4321-afc8-285e5fc94ff6"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -44,8 +71,8 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Move"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MoveLeftStick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -56,7 +83,7 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveWASD"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -66,19 +93,8 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""8180e8bd-4097-4f4e-ab88-4523101a6ce9"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -88,19 +104,8 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""1c5327b5-f71c-4f60-99c7-4e737386f1d1"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -110,19 +115,8 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""2e46982e-44cc-431b-9f0b-c11910bf467a"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -132,41 +126,74 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveWASD"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""169276b8-e70a-4ba8-ab6e-bd777cfd89fa"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveArrows"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""68d5285b-3d90-4c2c-9b79-8653419d5c34"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveArrows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""044a2766-145f-41a7-94e6-4723b78da7c9"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveArrows"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""80174fa1-845e-4afa-8c8c-d07d42743749"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveArrows"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""right"",
-                    ""id"": ""77bff152-3580-4b21-b6de-dcd0c7e41164"",
+                    ""id"": ""4286ac6e-ae29-4dce-92fa-b540c3564b13"",
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveArrows"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1635d3fe-58b6-4ba9-a4e2-f4b964f6b5c8"",
-                    ""path"": ""<XRController>/{Primary2DAxis}"",
+                    ""id"": ""1c949c67-4638-4a44-9601-d81fbd550781"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3ea4d645-4504-4529-b061-ab81934c3752"",
-                    ""path"": ""<Joystick>/stick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Move"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MoveMouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -774,7 +801,10 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_MoveLeftStick = m_Player.FindAction("MoveLeftStick", throwIfNotFound: true);
+        m_Player_MoveWASD = m_Player.FindAction("MoveWASD", throwIfNotFound: true);
+        m_Player_MoveArrows = m_Player.FindAction("MoveArrows", throwIfNotFound: true);
+        m_Player_MoveMouse = m_Player.FindAction("MoveMouse", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -849,12 +879,18 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_MoveLeftStick;
+    private readonly InputAction m_Player_MoveWASD;
+    private readonly InputAction m_Player_MoveArrows;
+    private readonly InputAction m_Player_MoveMouse;
     public struct PlayerActions
     {
         private @InfiniHellInput m_Wrapper;
         public PlayerActions(@InfiniHellInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @MoveLeftStick => m_Wrapper.m_Player_MoveLeftStick;
+        public InputAction @MoveWASD => m_Wrapper.m_Player_MoveWASD;
+        public InputAction @MoveArrows => m_Wrapper.m_Player_MoveArrows;
+        public InputAction @MoveMouse => m_Wrapper.m_Player_MoveMouse;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -864,16 +900,34 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
+            @MoveLeftStick.started += instance.OnMoveLeftStick;
+            @MoveLeftStick.performed += instance.OnMoveLeftStick;
+            @MoveLeftStick.canceled += instance.OnMoveLeftStick;
+            @MoveWASD.started += instance.OnMoveWASD;
+            @MoveWASD.performed += instance.OnMoveWASD;
+            @MoveWASD.canceled += instance.OnMoveWASD;
+            @MoveArrows.started += instance.OnMoveArrows;
+            @MoveArrows.performed += instance.OnMoveArrows;
+            @MoveArrows.canceled += instance.OnMoveArrows;
+            @MoveMouse.started += instance.OnMoveMouse;
+            @MoveMouse.performed += instance.OnMoveMouse;
+            @MoveMouse.canceled += instance.OnMoveMouse;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
+            @MoveLeftStick.started -= instance.OnMoveLeftStick;
+            @MoveLeftStick.performed -= instance.OnMoveLeftStick;
+            @MoveLeftStick.canceled -= instance.OnMoveLeftStick;
+            @MoveWASD.started -= instance.OnMoveWASD;
+            @MoveWASD.performed -= instance.OnMoveWASD;
+            @MoveWASD.canceled -= instance.OnMoveWASD;
+            @MoveArrows.started -= instance.OnMoveArrows;
+            @MoveArrows.performed -= instance.OnMoveArrows;
+            @MoveArrows.canceled -= instance.OnMoveArrows;
+            @MoveMouse.started -= instance.OnMoveMouse;
+            @MoveMouse.performed -= instance.OnMoveMouse;
+            @MoveMouse.canceled -= instance.OnMoveMouse;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1064,7 +1118,10 @@ public partial class @InfiniHellInput: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnMove(InputAction.CallbackContext context);
+        void OnMoveLeftStick(InputAction.CallbackContext context);
+        void OnMoveWASD(InputAction.CallbackContext context);
+        void OnMoveArrows(InputAction.CallbackContext context);
+        void OnMoveMouse(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

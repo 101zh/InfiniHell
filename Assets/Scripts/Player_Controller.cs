@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Player_Controller : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private InfiniHellInput inputActions;
 
+    private bool usingMouse;
     private Vector2 direction;
     private InputAction move;
     private bool isDead = false;
@@ -24,7 +26,7 @@ public class Player_Controller : MonoBehaviour
 
     private void OnEnable()
     {
-        move = inputActions.Player.Move;
+        move = determineControls();
         move.Enable();
     }
 
@@ -43,7 +45,20 @@ public class Player_Controller : MonoBehaviour
 
     private void Update()
     {
-        direction = move.ReadValue<Vector2>();
+        if (!usingMouse)
+            direction = move.ReadValue<Vector2>();
+        else
+        {
+            direction = Vector2.zero;
+            if (Input.GetMouseButton(0))
+            {
+                Vector2 mousePos = Input.mousePosition;
+                mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+                if (Vector2.Distance(mousePos, (Vector2)transform.position) > 0.05)
+                    direction = mousePos - (Vector2)transform.position;
+            }
+
+        }
     }
 
     // Update is called once per frame
@@ -73,5 +88,28 @@ public class Player_Controller : MonoBehaviour
         circleCollider2D.enabled = false;
 
         deathParticles.Play();
+    }
+
+
+    public InputAction determineControls()
+    {
+        string controls = PlayerPrefs.GetString("Controls", GameManager.defaultControls);
+
+        switch (controls)
+        {
+            case "WASD":
+                return inputActions.Player.MoveWASD;
+            case "Arrows":
+                return inputActions.Player.MoveArrows;
+            case "LeftStick":
+                return inputActions.Player.MoveLeftStick;
+            case "Mouse":
+                usingMouse = true;
+                return inputActions.Player.MoveMouse;
+            case "OnScreen":
+                return inputActions.Player.MoveLeftStick;
+        }
+
+        return null;
     }
 }

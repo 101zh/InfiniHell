@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float spawnerSize = 1f;
     [SerializeField] private GameObject deathMenu;
     [SerializeField] private bool tutorialLevel = false;
+    [SerializeField] private GameObject onScreenJoySticks;
 
+    public static readonly string defaultControls = "WASD";
     private readonly (float, float) bulletSpeeds = (1f, 4f);
     private readonly (float, float) spawnerSpeed = (10f, float.MaxValue);
     private readonly (int, int) numOfPatterns = (0, 4);
@@ -37,6 +39,11 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PlayerPrefs.GetString("Controls", defaultControls).Equals("OnScreen"))
+        {
+            onScreenJoySticks.SetActive(true);
+        }
+
         if (PlayerPrefs.GetInt("isSetDiff", 1) == 0)
         {
             curDifficulty = PlayerPrefs.GetFloat("setDiff", 0.0f);
