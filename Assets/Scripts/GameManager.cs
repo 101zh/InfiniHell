@@ -39,10 +39,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (PlayerPrefs.GetString("Controls", defaultControls).Equals("OnScreen"))
-        {
-            onScreenJoySticks.SetActive(true);
-        }
+        onScreenJoySticks.SetActive(PlayerPrefs.GetString("Controls", defaultControls).Equals("OnScreenJoystick"));
+
 
         if (PlayerPrefs.GetInt("isSetDiff", 1) == 0)
         {

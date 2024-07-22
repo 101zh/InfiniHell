@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class InGameMenuManager : MonoBehaviour
 {
-    [SerializeField] GameManager gameManager;
-    [SerializeField] GameObject pauseMenu;
-    [SerializeField] GameObject deathMenu;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject deathMenu;
+    [SerializeField] private TMP_Text controlsInfoText;
+    [SerializeField] private bool tutorial = false;
 
-    private InfiniHellInput inputActions;
-    private InputAction Esc;
     private bool paused = false;
     private bool dead = false;
 
     void Update()
     {
-        if (Esc.triggered && !dead)
+        if (Input.GetKeyDown(KeyCode.Escape) && !dead)
         {
             if (!paused)
             {
@@ -32,18 +33,9 @@ public class InGameMenuManager : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new InfiniHellInput();
-    }
-
-    private void OnEnable()
-    {
-        Esc = inputActions.UI.Pause;
-        Esc.Enable();
-    }
-
-    private void OnDisable()
-    {
-        Esc.Disable();
+        string controlScheme = PlayerPrefs.GetString("Controls", GameManager.defaultControls);
+        if (tutorial)
+            controlsInfoText.text = "Use " + controlScheme;
     }
     public void onTitleButtonPressed()
     {

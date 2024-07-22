@@ -95,6 +95,7 @@ public class Player_Controller : MonoBehaviour
     {
         string controls = PlayerPrefs.GetString("Controls", GameManager.defaultControls);
 
+        Debug.Log(controls);
         switch (controls)
         {
             case "WASD":
@@ -106,7 +107,7 @@ public class Player_Controller : MonoBehaviour
             case "Mouse":
                 usingMouse = true;
                 return inputActions.Player.MoveMouse;
-            case "OnScreen":
+            case "OnScreenJoystick":
                 return inputActions.Player.MoveLeftStick;
         }
 

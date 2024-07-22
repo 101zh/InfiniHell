@@ -17,7 +17,7 @@ public class TitleMenuManager : MonoBehaviour
     private void Start()
     {
         statsText.text = $"Longest Time Survived ★:\n{PlayerPrefs.GetFloat("BestTime", 0.0f)}\nHighest Difficulty Reached ★:\n{PlayerPrefs.GetFloat("BestDiff", 0.0f)}";
-        controlsDropDown.value = initControlsDropDown();
+        controlsDropDown.value = ControlsToInt();
     }
 
     public void OnStartButtonPress()
@@ -53,24 +53,31 @@ public class TitleMenuManager : MonoBehaviour
         GameManager.clearDiff();
     }
 
-    public void setControlsDropDown(int index)
+    public void setControlsDropdown(int index)
+    {
+        setControls(index);
+    }
+
+    public static string setControls(int index)
     {
         switch (index)
         {
             case 0:
-                PlayerPrefs.SetString("Controls", "WASD"); break;
+                PlayerPrefs.SetString("Controls", "WASD"); return "WASD";
             case 1:
-                PlayerPrefs.SetString("Controls", "Arrows"); break;
+                PlayerPrefs.SetString("Controls", "Arrows"); return "Arrows";
             case 2:
-                PlayerPrefs.SetString("Controls", "Mouse"); break;
+                PlayerPrefs.SetString("Controls", "Mouse"); return "Mouse";
             case 3:
-                PlayerPrefs.SetString("Controls", "LeftStick"); break;
+                PlayerPrefs.SetString("Controls", "LeftStick"); return "LeftStick";
             case 4:
-                PlayerPrefs.SetString("Controls", "OnScreen"); break;
+                PlayerPrefs.SetString("Controls", "OnScreenJoystick"); return "OnScreenJoystick";
         }
+
+        return null;
     }
 
-    private int initControlsDropDown()
+    public static int ControlsToInt()
     {
         string controls = PlayerPrefs.GetString("Controls", GameManager.defaultControls);
 
@@ -84,7 +91,7 @@ public class TitleMenuManager : MonoBehaviour
                 return 2;
             case "LeftStick":
                 return 3;
-            case "OnScreen":
+            case "OnScreenJoystick":
                 return 4;
         }
 
