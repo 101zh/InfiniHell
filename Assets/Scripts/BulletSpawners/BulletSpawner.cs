@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class BulletSpawner : MonoBehaviour
@@ -13,9 +12,9 @@ public class BulletSpawner : MonoBehaviour
     void Awake()
     {
         if (straightProjectile == null)
-            straightProjectile = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Straight Projectile.prefab", typeof(GameObject));
+            straightProjectile = (GameObject)Resources.Load("Prefabs/Straight Projectile");
         if (waveProjectile == null)
-            waveProjectile = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Wave Projectile.prefab", typeof(GameObject));
+            waveProjectile = (GameObject)Resources.Load("Prefabs/Wave Projectile");
     }
 
     protected GameObject[] FireOffAllFirePoints()
