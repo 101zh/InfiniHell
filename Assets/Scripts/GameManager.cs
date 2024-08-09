@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private InGameMenuManager menuManager;
+    [SerializeField] private float boundaryTolerance = 0.5f;
     [SerializeField] private GameObject spawner;
     [SerializeField] private BoxCollider2D[] walls; // [TopWall, RightWall, BottomWall, LeftWall]
     [SerializeField] private Camera mainCam;
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
+            updateBoundaries();
             timer += Time.deltaTime;
             if (timer > 15f)
             {
@@ -281,16 +283,20 @@ public class GameManager : MonoBehaviour
         screenHeight = cameraSize.y;
 
         walls[0].size = new Vector2(screenWidth * 2f, wallThickness);
-        walls[0].transform.position = new Vector2(0, screenHeight + (0.5f * wallThickness));
+        walls[0].transform.GetChild(0).transform.localScale = new Vector2(screenWidth * 2f - boundaryTolerance - wallThickness, 0.02f);
+        walls[0].transform.position = new Vector2(0, screenHeight + (0.5f * wallThickness) - boundaryTolerance);
 
         walls[1].size = new Vector2(wallThickness, screenHeight * 2f);
-        walls[1].transform.position = new Vector2(screenWidth + (0.5f * wallThickness), 0);
+        walls[1].transform.GetChild(0).transform.localScale = new Vector2(0.02f, screenHeight * 2f - boundaryTolerance - wallThickness); ;
+        walls[1].transform.position = new Vector2(screenWidth + (0.5f * wallThickness) - boundaryTolerance, 0);
 
         walls[2].size = new Vector2(screenWidth * 2f, wallThickness);
-        walls[2].transform.position = new Vector2(0, -screenHeight - (0.5f * wallThickness));
+        walls[2].transform.GetChild(0).transform.localScale = new Vector2(screenWidth * 2f - boundaryTolerance - wallThickness, 0.02f);
+        walls[2].transform.position = new Vector2(0, -screenHeight - (0.5f * wallThickness) + boundaryTolerance);
 
         walls[3].size = new Vector2(wallThickness, screenHeight * 2f);
-        walls[3].transform.position = new Vector2(-screenWidth - (0.5f * wallThickness), 0);
+        walls[3].transform.GetChild(0).transform.localScale = new Vector2(0.02f, screenHeight * 2f - boundaryTolerance - wallThickness);
+        walls[3].transform.position = new Vector2(-screenWidth - (0.5f * wallThickness) + boundaryTolerance, 0);
     }
 
     private float diffOnDeath;
