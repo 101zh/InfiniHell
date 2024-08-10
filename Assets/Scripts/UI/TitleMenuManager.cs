@@ -22,7 +22,8 @@ public class TitleMenuManager : MonoBehaviour
 
     public void OnStartButtonPress()
     {
-        Debug.Log("Load Main Game");
+        GameManager.clearDiff();
+        GameManager.level = -1;
         SceneManager.LoadScene("MainScene");
     }
     public void OnQuitButtonPress()
@@ -38,7 +39,9 @@ public class TitleMenuManager : MonoBehaviour
 
     public void OnTutorialButtonPress()
     {
-        SceneManager.LoadScene("TutorialScene");
+        GameManager.clearDiff();
+        GameManager.level = 0;
+        SceneManager.LoadScene("MainScene");
     }
 
     public void onBackButtonPressed()
@@ -46,11 +49,6 @@ public class TitleMenuManager : MonoBehaviour
         recordsMenu.SetActive(false);
         optionsMenu.SetActive(false);
         titleMenu.SetActive(true);
-    }
-
-    private void OnApplicationQuit()
-    {
-        GameManager.clearDiff();
     }
 
     public void setControlsDropdown(int index)

@@ -7,14 +7,21 @@ using UnityEngine.SceneManagement;
 
 public class InGameMenuManager : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManager;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject deathMenu;
-    [SerializeField] private TMP_Text controlsInfoText;
-    [SerializeField] private bool tutorial = false;
 
     private bool paused = false;
     private bool dead = false;
+
+    private void Awake()
+    {
+        SceneManager.activeSceneChanged += onSceneChanged;
+    }
+
+    private void onSceneChanged(Scene current, Scene next)
+    {
+        unpause();
+    }
 
     void Update()
     {
@@ -31,30 +38,20 @@ public class InGameMenuManager : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        string controlScheme = PlayerPrefs.GetString("Controls", GameManager.defaultControls);
-        if (tutorial)
-            controlsInfoText.text = "Use " + controlScheme;
-    }
     public void onTitleButtonPressed()
     {
-        GameManager.clearDiff();
-        unpause();
         SceneManager.LoadScene("TitleScene");
     }
 
     public void onRetryFromStartPressed()
     {
         GameManager.clearDiff();
-        unpause();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void onRetryDifficulty()
     {
-        unpause();
-        GameManager.setDiff(gameManager.getDifficultyOnDeath());
+        GameManager.setDiff(GameManager.getDifficultyOnDeath());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -72,14 +69,9 @@ public class InGameMenuManager : MonoBehaviour
     }
     public void unpause()
     {
-        pauseMenu.SetActive(false);
+        if (pauseMenu != null) pauseMenu.SetActive(false);
         Time.timeScale = 1.0f;
         paused = false;
-    }
-
-    private void OnApplicationQuit()
-    {
-        GameManager.clearDiff();
     }
 
     public void activateDeathMenu()

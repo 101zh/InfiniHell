@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class DeathMenu : MonoBehaviour
 {
-    [SerializeField] GameManager gameManager;
     [SerializeField] TMP_Text statsText;
 
     private void OnEnable()
     {
-        float timeSurvived = gameManager.getTimeSurvived();
-        float diff = gameManager.getDifficultyOnDeath();
+        float timeSurvived = GameManager.getTimeSurvived();
+        float diff = GameManager.getDifficultyOnDeath();
 
         float bestDiff = PlayerPrefs.GetFloat("BestDiff", diff);
         float bestTime = PlayerPrefs.GetFloat("BestTime", timeSurvived);
@@ -28,6 +27,6 @@ public class DeathMenu : MonoBehaviour
         }
 
 
-        statsText.text = $"Time Survived: {gameManager.getTimeSurvived()} ★: {bestTime} \nDifficulty Reached: {gameManager.getDifficultyOnDeath()} ★: {bestDiff} ";
+        statsText.text = $"Time Survived: {GameManager.getTimeSurvived()} ★: {bestTime} \nDifficulty Reached: {GameManager.getDifficultyOnDeath()} ★: {bestDiff} ";
     }
 }
