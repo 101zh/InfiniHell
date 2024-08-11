@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
             spawnerInstances[i] = Instantiate(squareSpawner, spawnPositions[i], squareSpawner.transform.rotation);
-            spawnerInstances[i].GetComponent<SquareSpawner>().setTimeDelay(timeDelay);
+            spawnerInstances[i].GetComponent<SquareSpawner>().setSmoothTimeFactor(timeDelay);
             spawnerInstances[i].GetComponent<SquareSpawner>().setBulletSpeed(bulletSpeed);
         }
 
@@ -181,13 +181,11 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-
-        float waitTime = 0.0f;
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
-            waitTime = spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(times, rotation);
+            spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(times, rotation);
         }
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitUntil(spawnerInstances[0].GetComponent<SquareSpawner>().DoneFiring);
 
 
         destinations = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
@@ -221,7 +219,7 @@ public class GameManager : MonoBehaviour
     {
         curNumOfActivePatterns++;
         GameObject spawnerInstance = Instantiate(squareSpawner, generateRandomPositionOutsideBounds(), squareSpawner.transform.rotation);
-        spawnerInstance.GetComponent<SquareSpawner>().setTimeDelay(timeDelay);
+        spawnerInstance.GetComponent<SquareSpawner>().setSmoothTimeFactor(timeDelay);
         spawnerInstance.GetComponent<SquareSpawner>().setBulletSpeed(bulletSpeed);
         Vector2 destination = generateRandomPositionWithinBounds();
         Vector2 velocity = Vector2.zero;
@@ -232,8 +230,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-
-        yield return new WaitForSeconds(spawnerInstance.GetComponent<SquareSpawner>().SpinFire(times, rotation));
+        spawnerInstance.GetComponent<SquareSpawner>().SpinFire(times, rotation);
+        yield return new WaitUntil(spawnerInstance.GetComponent<SquareSpawner>().DoneFiring);
 
 
         destination = generateRandomPositionOutsideBounds();

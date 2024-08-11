@@ -14,7 +14,7 @@ public class SprayerSpawner : BulletSpawner
     public float FireOffAllFirePoints(int times)
     {
         StartCoroutine(FireOffAllFirePointsCoroutine(times));
-        return times * timedelay;
+        return times * smoothTimeFactor;
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ public class SprayerSpawner : BulletSpawner
     public float MiddleFire(int times)
     {
         StartCoroutine(MiddleFireCoroutine(times));
-        return times * timedelay;
+        return times * smoothTimeFactor;
     }
 
     private IEnumerator MiddleFireCoroutine(int times)
@@ -36,7 +36,7 @@ public class SprayerSpawner : BulletSpawner
             {
                 Instantiate(straightProjectile, firePoints[j].position, firePoints[j].rotation);
             }
-            yield return new WaitForSeconds(timedelay);
+            yield return new WaitForSeconds(smoothTimeFactor);
         }
     }
 
@@ -45,7 +45,7 @@ public class SprayerSpawner : BulletSpawner
         for (int i = 0; i < times; i++)
         {
             base.FireOffAllFirePoints();
-            yield return new WaitForSeconds(timedelay);
+            yield return new WaitForSeconds(smoothTimeFactor);
         }
     }
 }

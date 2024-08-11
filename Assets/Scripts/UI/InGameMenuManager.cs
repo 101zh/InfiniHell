@@ -36,6 +36,10 @@ public class InGameMenuManager : MonoBehaviour
                 unpause();
             }
         }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     public void onTitleButtonPressed()

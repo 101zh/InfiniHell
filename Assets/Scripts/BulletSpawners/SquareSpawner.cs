@@ -9,16 +9,14 @@ public class SquareSpawner : BulletSpawner
     /// <summary>
     /// Initiates bullet firing pattern. 
     /// </summary>
-    /// <param name="times"></param>
-    /// <returns>The seconds for firing pattern to end</returns>
-    public float SpinFire(int times, float rotationAngle, float bulletAngle = 0)
+    public void SpinFire(int times, float rotationAngle, float bulletAngle = 0)
     {
         StartCoroutine(SpinFireCoroutine(times, rotationAngle, bulletAngle));
-        return timedelay * times;
     }
 
     private IEnumerator SpinFireCoroutine(int times, float rotationAngle, float bulletAngle)
     {
+        isDoneFiring = false;
         for (int j = 0; j < times; j++)
         {
             GameObject[] bullets = FireOffAllFirePoints();
@@ -27,9 +25,10 @@ public class SquareSpawner : BulletSpawner
                 bullet.transform.Rotate(0, 0, bulletAngle);
             }
 
-            yield return new WaitForSeconds(timedelay);
-            transform.Rotate(0, 0, rotationAngle);
+            StartCoroutine(smoothRotate(rotationAngle));
+            yield return new WaitUntil(DoneRotating);
         }
+        isDoneFiring = true;
     }
 
 }
