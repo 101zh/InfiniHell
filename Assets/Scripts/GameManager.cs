@@ -35,6 +35,22 @@ public class GameManager : MonoBehaviour
     private static float screenHeight;// In Coordinate Values
     [SerializeField] int curNumOfActivePatterns = 0;
 
+
+    private void resetVars()
+    {
+        dead = false;
+        curNumOfActivePatterns = 0;
+        curPatternIncreaseThreshold = 0.3f;
+        curSpawnerSpeed = 0.0f;
+        reachedMaxPatterns = false;
+        curMinBulletSpeed = 1f;
+        timer = 0f;
+        timerSucessions = 0;
+        dead = false;
+    }
+
+
+
     public static GameManager instance;
     // Start is called before the first frame update
     void Awake()
@@ -75,6 +91,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            resetVars();
             curDifficulty = isSetDiff ? theSetDiff : 0.0f;
             menuManager = GameObject.Find("MenuManager").GetComponent<InGameMenuManager>();
             GameObject.Find("JoystickOutline").SetActive(PlayerPrefs.GetString("Controls", defaultControls).Equals("OnScreenJoystick"));
