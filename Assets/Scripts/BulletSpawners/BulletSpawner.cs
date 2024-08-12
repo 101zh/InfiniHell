@@ -19,6 +19,17 @@ public class BulletSpawner : MonoBehaviour
             waveProjectile = (GameObject)Resources.Load("Prefabs/Wave Projectile");
     }
 
+    /// <summary>
+    /// Initiates bullet firing pattern. 
+    /// </summary>
+    /// <param name="times">The number of times that the bullet spawner shoots.</param>
+    /// <param name="rotationAngle">The set angle the bullet spawner rotates counterclockwise.</param>
+    /// <param name="middleFire">(Specific to Sprayer) if true, sprayer only shoots 3 middle shots</param>
+    public virtual void Fire(int times, float rotationAngle = 0.0f, bool middleFire = false)
+    {
+        //Implemented in child classes
+    }
+
     protected GameObject[] FireOffAllFirePoints()
     {
         GameObject[] bullets = new GameObject[firePoints.Length];

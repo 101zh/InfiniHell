@@ -255,63 +255,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4032517}
   m_CullTransparentMesh: 1
---- !u!1001 &16921360
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.7020302
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.2555492
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92387956
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.38268343
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2254571182337672620, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 5703590918078415809, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
-      propertyPath: m_Name
-      value: SquareSpawner
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 869ef31b8a107a742a392b21e0a24840, type: 3}
 --- !u!1 &277659343
 GameObject:
   m_ObjectHideFlags: 0
@@ -4513,4 +4456,3 @@ SceneRoots:
   - {fileID: 1378225412}
   - {fileID: 2821887460048147319}
   - {fileID: 1297273041}
-  - {fileID: 16921360}

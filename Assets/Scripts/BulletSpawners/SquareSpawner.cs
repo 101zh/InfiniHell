@@ -6,10 +6,7 @@ public class SquareSpawner : BulletSpawner
 {
     //Transform[] firePoints [Top, Right, Down, Left]
 
-    /// <summary>
-    /// Initiates bullet firing pattern. 
-    /// </summary>
-    public void SpinFire(int times, float rotationAngle)
+    public sealed override void Fire(int times, float rotationAngle, bool middleFire = false)
     {
         StartCoroutine(SpinFireCoroutine(times, rotationAngle));
     }

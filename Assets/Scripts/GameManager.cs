@@ -183,8 +183,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
             spawnerInstances[i] = Instantiate(squareSpawner, spawnPositions[i], squareSpawner.transform.rotation);
-            spawnerInstances[i].GetComponent<SquareSpawner>().setSmoothTimeFactor(timeDelay);
-            spawnerInstances[i].GetComponent<SquareSpawner>().setBulletSpeed(bulletSpeed);
+            spawnerInstances[i].GetComponent<BulletSpawner>().setSmoothTimeFactor(timeDelay);
+            spawnerInstances[i].GetComponent<BulletSpawner>().setBulletSpeed(bulletSpeed);
         }
 
         Vector2[] destinations = generatePosInAll4Quandrants(generateRandomPositionWithinBounds());
@@ -200,9 +200,9 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < spawnerInstances.Length; i++)
         {
-            spawnerInstances[i].GetComponent<SquareSpawner>().SpinFire(times, rotation);
+            spawnerInstances[i].GetComponent<BulletSpawner>().Fire(times, rotation);
         }
-        yield return new WaitUntil(spawnerInstances[0].GetComponent<SquareSpawner>().DoneFiring);
+        yield return new WaitUntil(spawnerInstances[0].GetComponent<BulletSpawner>().DoneFiring);
 
 
         destinations = generatePosInAll4Quandrants(generateRandomPositionOutsideBounds());
@@ -236,8 +236,8 @@ public class GameManager : MonoBehaviour
     {
         curNumOfActivePatterns++;
         GameObject spawnerInstance = Instantiate(squareSpawner, generateRandomPositionOutsideBounds(), squareSpawner.transform.rotation);
-        spawnerInstance.GetComponent<SquareSpawner>().setSmoothTimeFactor(timeDelay);
-        spawnerInstance.GetComponent<SquareSpawner>().setBulletSpeed(bulletSpeed);
+        spawnerInstance.GetComponent<BulletSpawner>().setSmoothTimeFactor(timeDelay);
+        spawnerInstance.GetComponent<BulletSpawner>().setBulletSpeed(bulletSpeed);
         Vector2 destination = generateRandomPositionWithinBounds();
         Vector2 velocity = Vector2.zero;
 
@@ -247,8 +247,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        spawnerInstance.GetComponent<SquareSpawner>().SpinFire(times, rotation);
-        yield return new WaitUntil(spawnerInstance.GetComponent<SquareSpawner>().DoneFiring);
+        spawnerInstance.GetComponent<BulletSpawner>().Fire(times, rotation);
+        yield return new WaitUntil(spawnerInstance.GetComponent<BulletSpawner>().DoneFiring);
 
 
         destination = generateRandomPositionOutsideBounds();

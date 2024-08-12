@@ -6,30 +6,15 @@ public class SprayerSpawner : BulletSpawner
 {
     //Transform[] firePoints [Right, MidRight, Mid, MidLeft, Left]
 
-    /// <summary>
-    /// Initiates bullet firing pattern. 
-    /// </summary>
-    /// <param name="times"></param>
-    /// <returns>The seconds for firing pattern to end</returns>
-    public float FireOffAllFirePoints(int times)
+    public sealed override void Fire(int times, float rotationAngle, bool middleFire = false)
     {
-        StartCoroutine(FireOffAllFirePointsCoroutine(times));
-        return times * smoothTimeFactor;
-    }
-
-    /// <summary>
-    /// Initiates bullet firing pattern. 
-    /// </summary>
-    /// <param name="times"></param>
-    /// <returns>The seconds for firing pattern to end</returns>
-    public float MiddleFire(int times)
-    {
-        StartCoroutine(MiddleFireCoroutine(times));
-        return times * smoothTimeFactor;
+        if (middleFire) { StartCoroutine(MiddleFireCoroutine(times)); }
+        else { StartCoroutine(FireOffAllFirePointsCoroutine(times)); }
     }
 
     private IEnumerator MiddleFireCoroutine(int times)
     {
+        isDoneFiring = false;
         for (int i = 0; i < times; i++)
         {
             for (int j = 1; j <= 3; j++)
@@ -38,14 +23,17 @@ public class SprayerSpawner : BulletSpawner
             }
             yield return new WaitForSeconds(smoothTimeFactor);
         }
+        isDoneFiring = true;
     }
 
     private IEnumerator FireOffAllFirePointsCoroutine(int times)
     {
+        isDoneFiring = false;
         for (int i = 0; i < times; i++)
         {
             base.FireOffAllFirePoints();
             yield return new WaitForSeconds(smoothTimeFactor);
         }
+        isDoneFiring = true;
     }
 }
