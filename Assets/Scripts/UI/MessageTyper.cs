@@ -30,7 +30,10 @@ public class MessageTyper : MonoBehaviour
             text.text += message[i] + cursor;
             yield return new WaitForSeconds(1f / charPerSec);
         }
-
+        if (text.text.Length % 2 == 0)
+        {
+            text.text = text.text.Substring(0, text.text.Length - 1);
+        }
     }
 
 }
