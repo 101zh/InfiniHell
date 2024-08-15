@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletSpawner : MonoBehaviour
 {
     [SerializeField] protected Transform[] firePoints;
-    [SerializeField] protected float smoothTimeFactor = 0.75f;
+    [SerializeField] protected float smoothRotationTimeFactor = 0.75f;
 
     private bool isDoneRotating = false;
     protected bool isDoneFiring = false;
@@ -61,7 +61,7 @@ public class BulletSpawner : MonoBehaviour
 
         while (!(transform.eulerAngles.z < targetAngle + 0.05 && transform.eulerAngles.z > targetAngle - 0.05))
         {
-            float angle = Mathf.SmoothDamp(transform.eulerAngles.z, targetAngle, ref zVelocity, smoothTimeFactor);
+            float angle = Mathf.SmoothDamp(transform.eulerAngles.z, targetAngle, ref zVelocity, smoothRotationTimeFactor);
             transform.rotation = Quaternion.Euler(0, 0, angle);
             yield return null;
         }
@@ -76,6 +76,6 @@ public class BulletSpawner : MonoBehaviour
 
     public void setSmoothTimeFactor(float time)
     {
-        smoothTimeFactor = time < 0 ? 0 : time;
+        smoothRotationTimeFactor = time < 0 ? 0 : time;
     }
 }

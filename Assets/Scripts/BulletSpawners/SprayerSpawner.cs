@@ -21,7 +21,7 @@ public class SprayerSpawner : BulletSpawner
             {
                 Instantiate(straightProjectile, firePoints[j].position, firePoints[j].rotation);
             }
-            yield return new WaitForSeconds(smoothTimeFactor);
+            yield return new WaitForSeconds(smoothRotationTimeFactor);
         }
         isDoneFiring = true;
     }
@@ -32,7 +32,7 @@ public class SprayerSpawner : BulletSpawner
         for (int i = 0; i < times; i++)
         {
             base.FireOffAllFirePoints();
-            yield return new WaitForSeconds(smoothTimeFactor);
+            yield return new WaitForSeconds(smoothRotationTimeFactor);
         }
         isDoneFiring = true;
     }

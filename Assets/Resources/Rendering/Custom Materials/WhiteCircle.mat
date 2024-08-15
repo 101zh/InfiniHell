@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player
+  m_Name: WhiteCircle
   m_Shader: {fileID: -6465566751694194690, guid: ac149f2e96c4d2647bf1ed8735b9b8e6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
