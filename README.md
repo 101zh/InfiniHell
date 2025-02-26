@@ -24,5 +24,5 @@ This the repository for a bullet hell game
 - Keyboard & Mouse
 
 ## Credits
-Game development: 101zh
+Game development: 101zh\
 Sprites: 101zh
